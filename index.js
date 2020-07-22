@@ -60,10 +60,11 @@ console.log(getFinals("Final"));
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
 function getYears(getFinals) {
-    const yearsOnly = getFinals("Final").map(function(item){
-        return item.Year;
+    let yearsArr = [];
+     const years = getFinals("Final").map(function(item){
+         yearsArr.push(item.Year);
     })
-    return yearsOnly;
+    return yearsArr;
 }
 console.log("Task 3");
 console.log(getYears(getFinals));
@@ -72,18 +73,36 @@ console.log(getYears(getFinals));
 /* Task 5: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */ 
 
 function getWinners(getFinals) {
-    const winners = getFinals("Final").filter(function(item){
+    let winners = [];
+    getFinals("Final").forEach(function(item){
         if(item["Home Team Goals"] > item["Away Team Goals"]){
-            return item["Home Team Name"] + " won!";
-        } else if(item["Home Team Goals"] < item["Away Team Goals"]){
-            return item["Away Team Name"] + " won!"
+             winners.push(item["Home Team Name"]);
+        }else if(item["Home Team Goals"] < item["Away Team Goals"]){
+             winners.push(item["Away Team Name"]);
+        }else {
+            winners.push("Tie");
         }
-        
-    })   
-return winners;
-}
 
-getWinners();
+    })
+    return winners;
+    // other way:
+    // let winners = [];    
+    // getFinals("Final").forEach(function(item){
+    
+    //     if(item["Home Team Goals"] > item["Away Team Goals"]){
+    //         winners.push("In " + item.Year  + " " +  item["Home Team Name"] + " won the Finals!");
+    //     } else if(item["Home Team Goals"] < item["Away Team Goals"]){
+    //         winners.push("In " + item.Year  + " " +  item["Away Team Name"] + " won the Finals!");
+    //     } else {
+    //         winners.push("In " + item.Year  + " it was a tie between " + item["Home Team Name"] + " and " + item["Away Team Name"]) 
+    //     }
+                  
+        
+    // })   
+    // return winners; 
+}
+console.log("Task 5");
+console.log(getWinners(getFinals));
 
 /* Task 6: Implement a higher-order function called `getWinnersByYear` that accepts the following parameters and returns a set of strings "In {year}, {country} won the world cup!" 
 
@@ -92,21 +111,32 @@ Parameters:
  * callback function getYears
  */
 
-function getWinnersByYear(/* code here */) {
+function getWinnersByYear(getWinners, getYears) {
+    //uncomment to return an array of strings instead of non-array strings. //let winnerYearCombined = []    
+    
+    for(let i = 0; i < getYears(getFinals).length; i++){
+        console.log("In " + getYears(getFinals)[i] + " " + getWinners(getFinals)[i] + " won the worldcup!")
+        //uncomment to return an array of strings instead of non-array strings. //winnerYearCombined.push("In " + getYears(getFinals)[i] + " " + getWinners(getFinals)[i] + " won the worldcup!") //as an array
+    }        
+        //uncomment to return an array of strings instead of non-array strings. //return winnerYearCombined;
+    }
 
-};
 
-getWinnersByYear();
+console.log("Task 6");
+getWinnersByYear(getWinners, getYears); //add console.log to print an array of strings instead of normal strings.
 
 /* Task 7: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
-function getAverageGoals(/* code here */) {
+function getAverageGoals(data) {
 
-    /* code here */
-
+    const averageGoals = data.reduce(function(accumulator, item){
+        
+        return (accumulator + item["Home Team Goals"] + item["Away Team Goals"]); 
+    },0);
+return "The average is" + " " +  averageGoals / data.length + " goals per game";
 };
-
-getAverageGoals();
+console.log("Task 7");
+console.log(getAverageGoals(fifaData));
 
 /// STRETCH 🥅 //
 
